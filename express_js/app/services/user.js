@@ -1,68 +1,38 @@
-const userData = require('../data/user.json')
-
-module.exports={
+const user = require("../models/user")
 
 
-   //--------------------------------create----------------------------------post----------------------------------
-     async create(data){
-        let userId= userData[userData.length-1].id+1
-        const muserData ={
-        id: userId,
-        name:data.name,
-        Email:data.Email
-      
-      
-        }
-        userData.push(muserData)
-        return muserData
-     },
+module.exports = {
+
+   async find() {
+      const alluser = await user.find({}).lean()
+      return alluser
+   },
 
 
-     //--------------------------------get----------------------------------find-------------------------------------
-     async find(){
-     const user =userData
-     return user
-     },
-
-
-     //--------------------------------get1----------------------------------findOne--------------------------------------
-     async findOne(userId){
-      const user= userData.find((singleuser)=>{
-         if(singleuser.id==userId){
-            return singleuser
-         }
-      })
-      return user
-     },
-
-
-
-     //--------------------------------update----------------------------------put---------------------------
-async update(userId,data){
-let updateuser={}
-userData.forEach((singleuser)=>{
-   if(singleuser.id== userId){
-      singleuser.body=data.body
-      singleuser.name=data.name
-      singleuser.Email=data.Email
-      updateuser=singleuser
-   }
-})
-return updateuser
-} ,
-
-
-
-//--------------------------------delete----------------------------------
-async delete(userId){
-const userIndex= userData.findIndex((singleuser)=>{
-   if(singleuser.id==userId){
+   async findOne(userId) {
+      const singleuser = await user.findById(userId).lean()
       return singleuser
-   }
-})
+   },
 
-userData.splice(userIndex, 1)
-return "ok"
-}
 
+   async update(userId, data) {
+
+      const updateuser = user.findByIdAndUpdate(userId, data)
+      return updateuser
+
+   },
+
+
+   async create(data) {
+      const newuser = new user(data)
+      await newuser.save()
+
+      return newuser
+   },
+
+
+   async delete(userId) {
+      const deleteuser = await user.findByIdAndDelete(userId)
+      return deleteuser
+   },
 }

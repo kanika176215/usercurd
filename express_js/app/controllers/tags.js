@@ -1,6 +1,6 @@
 
 
-const userService = require('../services/user')
+const tagsService = require('../services/tags')
 
 module.exports = {
 
@@ -12,7 +12,7 @@ module.exports = {
 
 
         try {
-            const result = await userService.find()
+            const result = await tagsService.find()
 
 
 
@@ -33,12 +33,12 @@ module.exports = {
 
 
      try {
-        if (req.params && req.params.userId) {
-            const result = await userService.findOne(req.params.userId)
+        if (req.params && req.params.tagsId) {
+            const result = await tagsService.findOne(req.params.tagsId)
             res.send(result)
         }
         else {
-            res.status(400).send("user id is reqired")
+            res.status(400).send("tags id is reqired")
         }
         
      } catch (error) {
@@ -63,16 +63,16 @@ module.exports = {
     try {
         
 
-    if (req.params && req.params.userId) {
+    if (req.params && req.params.tagsId) {
 
 
 
-            const result = await userService.update(req.params.userId, req.body)
+            const result = await tagsService.update(req.params.tagsId, req.body)
             res.send(result)
         }
 
         else {
-            res.status(400).send("user id is required")
+            res.status(400).send("tags id is required")
         }
 
     } catch (error) {
@@ -89,11 +89,14 @@ module.exports = {
 
      try {
         if (req.body) {
-        
+           
 
-                const result = await userService.create(req.body)
+                const result = await tagsService.create(req.body)
                 res.send(result)
-    }
+           
+
+        
+        }
         else {
             res.status(400).send("data is required")
 
@@ -110,14 +113,14 @@ module.exports = {
 
     async delete(req, res, next) {
      try {
-        if (req.params && req.params.userId) {
-            const result = await userService.delete(req.params.userId)
+        if (req.params && req.params.tagsId) {
+            const result = await tagsService.delete(req.params.tagsId)
             res.send(result)
 
         }
 
         else {
-            req.status(400).send("user id is req")
+            req.status(400).send("tags id is req")
         }
      } catch (error) {
         console.log("error",error)
